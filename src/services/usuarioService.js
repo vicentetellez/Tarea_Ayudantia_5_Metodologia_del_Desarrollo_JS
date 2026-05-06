@@ -7,8 +7,15 @@
  */
 
 // Almacenamiento temporal en memoria (SOLO para desarrollo)
-let usuarios = [];
-let idContador = 1;
+let usuarios = [{
+  "id": 1,
+  "nombre": "Juan",
+  "apellido": "Pérez",
+  "email": "juan@example.com",
+  "edad": 25,
+  "fechaRegistro": new Date().toISOString()
+}];
+let idContador = 2;
 
 /**
  * Crear un nuevo usuario
@@ -34,6 +41,7 @@ const crearUsuario = (datosUsuario) => {
 const obtenerTodosLosUsuarios = () => {
   // Ayudita: Solo retorna el array de usuarios
   // Hazlo simple: return usuarios;
+  return (usuarios);
 };
 
 /**
@@ -45,6 +53,13 @@ const obtenerTodosLosUsuarios = () => {
 const obtenerUsuarioPorId = (id) => {
   // Ayudita: Usa .find() para buscar en el array
   // Ejemplo: usuarios.find(usuario => usuario.id === parseInt(id))
+  const x = usuarios.find(usuario => usuario.id === parseInt(id));
+  if (x === undefined){
+    return null;
+  }
+  else {
+    return x;
+  }
 };
 
 /**
@@ -60,6 +75,14 @@ const actualizarUsuario = (id, datosActualizados) => {
   // 2. Si no existe, retorna null
   // 3. Si existe, actualiza los campos: usuarios[index] = { ...usuarios[index], ...datosActualizados }
   // 4. Retorna el usuario actualizado
+  const index = usuarios.findIndex(user => user.id === parseInt(id));
+  if (index === -1){
+    return null;
+  }
+  else {
+    usuarios[index] = {...usuarios[index], ...datosActualizados};
+    return usuarios[index];
+  }
 };
 
 /**

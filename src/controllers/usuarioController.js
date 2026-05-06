@@ -51,7 +51,12 @@ const obtenerTodosLosUsuarios = (req, res) => {
     // Ayudita: 
     // 1. Llama a usuarioService.obtenerTodosLosUsuarios()
     // 2. Responde con sendSuccess(res, usuarios, 'Usuarios obtenidos')
-    
+    const usuarios = usuarioService.obtenerTodosLosUsuarios();
+    return sendSuccess(
+      res,
+      usuarios,
+      'Usuarios obtenidos'
+    );
   } catch (error) {
     return sendError(res, 'Error al obtener usuarios', 500);
   }
@@ -70,7 +75,20 @@ const obtenerUsuarioPorId = (req, res) => {
     // 2. Llama a usuarioService.obtenerUsuarioPorId(id)
     // 3. Si el usuario NO existe, responde con sendError(res, 'Usuario no encontrado', 404)
     // 4. Si el usuario EXISTE, responde con sendSuccess(res, usuario, 'Usuario encontrado')
-    
+    const id = req.params.id;
+    const usuario = usuarioService.obtenerUsuarioPorId(id);
+
+    if (usuario === null) {
+      return sendError(
+        res, 
+        'Usuario no encontrado', 
+        404);
+    }
+
+    return sendSuccess(
+      res,
+      usuario,
+      'Usuario encontrado');
   } catch (error) {
     return sendError(res, 'Error al obtener usuario', 500);
   }
@@ -90,7 +108,25 @@ const actualizarUsuario = (req, res) => {
     // 3. Llama a usuarioService.actualizarUsuario(id, value)
     // 4. Si el usuario NO existe, responde con sendError(res, 'Usuario no encontrado', 404)
     // 5. Si el usuario EXISTE, responde con sendSuccess(res, usuarioActualizado, 'Usuario actualizado')
+    const { error, value } = updateUsuarioSchema.validate(req.body);
     
+    const id = req.params.id;
+
+    const x = usuarioService.actualizarUsuario(id, value);
+
+    if (x === null) {
+      return sendError(
+        res,
+        'Usuario no encontrado',
+        404,
+      );
+    }
+
+    return sendSuccess(
+      res,
+      x,
+      'Usuario actualizado'
+    );
   } catch (error) {
     return sendError(res, 'Error al actualizar usuario', 500);
   }
